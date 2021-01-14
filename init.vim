@@ -31,7 +31,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
-Plug 'ryanoasis/vim-devicons'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
 call plug#end()
 
 colorscheme gruvbox
@@ -57,5 +58,14 @@ nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>gy <Plug>(coc-type-definition)
 nmap <leader>gi <Plug>(coc-implementation)
 nmap <leader>gr <Plug>(coc-references)
+
+" -- vim fugitive key mappings
+"  get commit from right window
+nmap <leader>gk :diffget //3<CR>
+" get commit from left window
+nmap <leader>gj :diffget //2<CR>
+" git status
+nmap <leader>gs :G<CR>
+
 let g:ctrlp_max_files = 0
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
