@@ -20,6 +20,18 @@ set cmdheight=2
 set updatetime=50
 
 set colorcolumn=80
+
+" c++ syntax highlighting
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:syntastic_cpp_checkers = ['cpplint']
+let g:syntastic_c_checkers = ['cpplint']
+let g:syntastic_cpp_cpplint_exec = 'cpplint'
+" The following two lines are optional. Configure it to your liking!
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 colorscheme default
 
@@ -33,6 +45,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
+Plug 'zivyangll/git-blame.vim'
 call plug#end()
 
 colorscheme gruvbox
@@ -54,10 +67,10 @@ nmap <leader>[g <Plug>(coc-diagnostic-prev)
 nmap <leader>]g <Plug>(coc-diagnostic-next)
 
 " " GoTo code navigation.
-nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gy <Plug>(coc-type-definition)
-nmap <leader>gi <Plug>(coc-implementation)
-nmap <leader>gr <Plug>(coc-references)
+nmap <leader>jd <Plug>(coc-definition)
+nmap <leader>jy <Plug>(coc-type-definition)
+nmap <leader>ji <Plug>(coc-implementation)
+nmap <leader>jr <Plug>(coc-references)
 
 " -- vim fugitive key mappings
 "  get commit from right window
@@ -66,6 +79,8 @@ nmap <leader>gk :diffget //3<CR>
 nmap <leader>gj :diffget //2<CR>
 " git status
 nmap <leader>gs :G<CR>
+" git blame
+nnoremap <Leader>gb :<C-u>call gitblame#echo()<CR>
 
 let g:ctrlp_max_files = 0
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
