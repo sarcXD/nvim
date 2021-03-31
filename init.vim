@@ -21,24 +21,12 @@ set updatetime=50
 
 set colorcolumn=80
 
-" c++ syntax highlighting
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:syntastic_cpp_checkers = ['cpplint']
-let g:syntastic_c_checkers = ['cpplint']
-let g:syntastic_cpp_cpplint_exec = 'cpplint'
-" The following two lines are optional. Configure it to your liking!
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 colorscheme default
 
 call plug#begin('~/.vim/plugged')
 Plug 'https://github.com/morhetz/gruvbox.git'
 Plug 'preservim/nerdtree'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
@@ -46,6 +34,8 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'zivyangll/git-blame.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 colorscheme gruvbox
@@ -82,5 +72,12 @@ nmap <leader>gs :G<CR>
 " git blame
 nnoremap <Leader>gb :<C-u>call gitblame#echo()<CR>
 
-let g:ctrlp_max_files = 0
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+"------------------"
+"-------FZF--------"
+"------------------"
+nnoremap <C-f> :Rg<CR>
+nnoremap <C-p> :Files<CR>
+let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor}/*"'
+command! -bang -nargs=? -complete=dir Files
+     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
