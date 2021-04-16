@@ -20,6 +20,7 @@ set cmdheight=2
 set updatetime=50
 
 set colorcolumn=80
+au BufRead,BufNewFile *.md setlocal textwidth=80
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 colorscheme default
@@ -36,11 +37,12 @@ Plug 'vim-airline/vim-airline'
 Plug 'zivyangll/git-blame.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'djoshea/vim-autoread'
 call plug#end()
 
 colorscheme gruvbox
 let g:javascript_plugin_jsdoc = 1
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier']
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-python']
 let mapleader = " "
 
 nnoremap <Leader>h <C-w>h
@@ -75,8 +77,9 @@ nnoremap <Leader>gb :<C-u>call gitblame#echo()<CR>
 "------------------"
 "-------FZF--------"
 "------------------"
-nnoremap <C-f> :Rg<CR>
+nnoremap <leader>f :Rg<CR>
 nnoremap <C-p> :Files<CR>
+noremap <C-f> :Lines<CR>
 let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor}/*"'
 command! -bang -nargs=? -complete=dir Files
      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
