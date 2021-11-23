@@ -38,7 +38,6 @@ Plug 'zivyangll/git-blame.vim' " easy git blame plugin
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'djoshea/vim-autoread' " autoupdate files
-Plug 'dbeniamine/cheat.sh-vim' " cheat sheet for vim
 Plug 'https://github.com/szw/vim-maximizer.git' " window maximizer for vim
 " Plug 'puremourning/vimspector' " #TODO Setup vimspector debugging for vim
 call plug#end()
@@ -48,10 +47,6 @@ let g:javascript_plugin_jsdoc = 1
 let g:coc_global_extensions = [ 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pyright']
 let mapleader = " "
 
-nnoremap <Leader>h <C-w>h
-nnoremap <Leader>j <C-w>j
-nnoremap <Leader>k <C-w>k
-nnoremap <Leader>l <C-w>l
 nnoremap <Leader>+ :vertical resize +5<CR> 
 nnoremap <Leader>- :vertical resize -5<CR>
 nnoremap <leader>nt :NERDTree<CR>
