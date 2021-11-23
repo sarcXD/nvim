@@ -15,7 +15,7 @@ set undofile
 set incsearch
 set scrolloff=8
 set termguicolors
-set cmdheight=2
+set cmdheight=1
 
 set updatetime=50
 
@@ -29,20 +29,23 @@ call plug#begin('~/.vim/plugged')
 Plug 'https://github.com/morhetz/gruvbox.git'
 Plug 'preservim/nerdtree'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'pangloss/vim-javascript' " for javascript only
+Plug 'leafgarland/typescript-vim' " for typescript only
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
-Plug 'zivyangll/git-blame.vim'
+Plug 'zivyangll/git-blame.vim' " easy git blame plugin
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'djoshea/vim-autoread'
+Plug 'djoshea/vim-autoread' " autoupdate files
+Plug 'dbeniamine/cheat.sh-vim' " cheat sheet for vim
+Plug 'https://github.com/szw/vim-maximizer.git' " window maximizer for vim
+" Plug 'puremourning/vimspector' " #TODO Setup vimspector debugging for vim
 call plug#end()
 
 colorscheme gruvbox
 let g:javascript_plugin_jsdoc = 1
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-python']
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pyright']
 let mapleader = " "
 
 nnoremap <Leader>h <C-w>h
@@ -73,6 +76,8 @@ nmap <leader>gj :diffget //2<CR>
 nmap <leader>gs :G<CR>
 " git blame
 nnoremap <Leader>gb :<C-u>call gitblame#echo()<CR>
+" git push set upstream shortcode
+nnoremap <Leader>gpsu :Git push --set-upstream origin 
 
 "------------------"
 "-------FZF--------"
@@ -84,3 +89,5 @@ let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_mo
 command! -bang -nargs=? -complete=dir Files
      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
+"---------Vim Maximizer-------"
+nnoremap <leader>mx :MaximizerToggle<CR>

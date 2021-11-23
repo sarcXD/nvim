@@ -7,6 +7,9 @@
     "json",
     "javascriptreact",
     "typescript.tsx",
+    "css",
+    "scss",
+    "html",
     "python"
   ]
 }
