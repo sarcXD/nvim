@@ -34,7 +34,6 @@ Plug 'leafgarland/typescript-vim' " for typescript only
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
-Plug 'zivyangll/git-blame.vim' " easy git blame plugin
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'djoshea/vim-autoread' " autoupdate files
@@ -70,9 +69,17 @@ nmap <leader>gj :diffget //2<CR>
 " git status
 nmap <leader>gs :G<CR>
 " git blame
-nnoremap <Leader>gb :<C-u>call gitblame#echo()<CR>
+nnoremap <Leader>gb :Git blame<CR>
+" get current branch
+function! GitPushUpsOrgBranch()
+  let branch = system("git branch --show-current")
+  let push_str = system("git push --set-upstream origin ".branch)
+  echo push_str
+  return 1
+endfunction
+
 " git push set upstream shortcode
-nnoremap <Leader>gpsu :Git push --set-upstream origin 
+nnoremap <Leader>gpsu :call GitPushUpsOrgBranch()
 
 "------------------"
 "-------FZF--------"
