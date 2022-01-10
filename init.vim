@@ -70,16 +70,32 @@ nmap <leader>gj :diffget //2<CR>
 nmap <leader>gs :G<CR>
 " git blame
 nnoremap <Leader>gb :Git blame<CR>
-" get current branch
+
+function! ConfirmBox(msg)
+  let result = confirm(a:msg, "&Yes\n&No")
+  return result
+endfunction
+
+" For new branch
+" gets branch name
+" sets upstream origin automatically
 function! GitPushUpsOrgBranch()
   let branch = system("git branch --show-current")
-  let push_str = system("git push --set-upstream origin ".branch)
-  echo push_str
+  let push_str = "git push --set-upstream origin ".branch
+  let conf_msg = "Do you want to execute\n".push_str
+  let conf_res = ConfirmBox(conf_msg)
+  if conf_res == 1
+    let push_str_out = system(push_str)
+    echo push_str_out
+  endif
   return 1
 endfunction
 
-" git push set upstream shortcode
-nnoremap <Leader>gpsu :call GitPushUpsOrgBranch()
+" git push set upstream remap
+nnoremap<silent> <Leader>gpsu :call GitPushUpsOrgBranch()<CR>
+
+" refresh vim env
+nnoremap<silent> <C-r> :source $MYVIMRC<CR>
 
 "------------------"
 "-------FZF--------"
