@@ -70,7 +70,16 @@ nmap <leader>gj :diffget //2<CR>
 nmap <leader>gs :G<CR>
 " git blame
 nnoremap <Leader>gb :Git blame<CR>
+" git switch to develop
+nnoremap <Leader>gcd :Git checkout develop<CR>
+" git switch to master
+nnoremap <Leader>gcm :Git checkout master<CR>
+" git checkout to existing branch
+nnoremap <Leader>gce :Git checkout 
+" git create and checkout branch, and have user type branch_name
+nnoremap <Leader>gcb :Git checkout -b 
 
+" Custom function for creating Confirmation Box
 function! ConfirmBox(msg)
   let result = confirm(a:msg, "&Yes\n&No")
   return result
@@ -95,12 +104,12 @@ endfunction
 nnoremap<silent> <Leader>gpsu :call GitPushUpsOrgBranch()<CR>
 
 " refresh vim env
-nnoremap<silent> <C-r> :source $MYVIMRC<CR>
+nnoremap<silent> <C-r><C-s> :source $MYVIMRC<CR>
 
 "------------------"
 "-------FZF--------"
 "------------------"
-nnoremap <leader>f :Rg<CR>
+nnoremap <leader>f :Rg <CR>
 nnoremap <C-p> :Files<CR>
 noremap <C-f> :Lines<CR>
 let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor}/*"'
