@@ -25,21 +25,37 @@ au BufRead,BufNewFile *.md setlocal textwidth=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 colorscheme default
 
-call plug#begin('~/.vim/plugged')
-Plug 'https://github.com/morhetz/gruvbox.git'
-Plug 'preservim/nerdtree'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'pangloss/vim-javascript' " for javascript only
-Plug 'leafgarland/typescript-vim' " for typescript only
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'djoshea/vim-autoread' " autoupdate files
-Plug 'https://github.com/szw/vim-maximizer.git' " window maximizer for vim
+"function! CheckForFolder(folder)
+"  let searchStr = 'find '.a:folder.' -maxdepth 3 | '
+"  let fout = execute()
+
+let ftFrontend= 'typescript,javascript,html,css' 
+let ftBackendNode= 'javascript,typescript'
+let ftBackendPy= 'python'
+let ftFullStackCurr=ftFrontend.",".ftBackendPy
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'https://github.com/morhetz/gruvbox.git'
+Plugin 'preservim/nerdtree'
+autocmd FileType ftFullStackCurr execute \
+      \ Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+autocmd FileType javascript execute \
+      \ Plugin 'pangloss/vim-javascript' " for javascript only
+autocmd FileType typscript execute \
+      \ Plugin 'leafgarland/typescript-vim' " for typescript only
+autocmd FileType ftFrontend execute Plugin 'maxmellon/vim-jsx-pretty'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-airline/vim-airline'
+autocmd FileType ftFullStackCurr execute \
+      \ Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+autocmd FileType ftFullStackCurr execute Plugin 'junegunn/fzf.vim'
+Plugin 'djoshea/vim-autoread' " autoupdate files
+Plugin 'https://github.com/szw/vim-maximizer.git' " window maximizer for vim
 " Plug 'puremourning/vimspector' " #TODO Setup vimspector debugging for vim
-call plug#end()
+call vundle#end()
+
+" Selectively bundling plugins based on filetype
 
 colorscheme gruvbox
 let g:javascript_plugin_jsdoc = 1
