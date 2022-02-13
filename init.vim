@@ -33,33 +33,25 @@ let ftFrontend= 'typescript,javascript,html,css'
 let ftBackendNode= 'javascript,typescript'
 let ftBackendPy= 'python'
 let ftFullStackCurr=ftFrontend.",".ftBackendPy
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'https://github.com/morhetz/gruvbox.git'
-Plugin 'preservim/nerdtree'
-autocmd FileType ftFullStackCurr execute \
-      \ Plugin 'neoclide/coc.nvim', {'branch': 'release'}
-autocmd FileType javascript execute \
-      \ Plugin 'pangloss/vim-javascript' " for javascript only
-autocmd FileType typscript execute \
-      \ Plugin 'leafgarland/typescript-vim' " for typescript only
-autocmd FileType ftFrontend execute Plugin 'maxmellon/vim-jsx-pretty'
-Plugin 'tpope/vim-fugitive'
-Plugin 'vim-airline/vim-airline'
-autocmd FileType ftFullStackCurr execute \
-      \ Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-autocmd FileType ftFullStackCurr execute Plugin 'junegunn/fzf.vim'
-Plugin 'djoshea/vim-autoread' " autoupdate files
-Plugin 'https://github.com/szw/vim-maximizer.git' " window maximizer for vim
+call plug#begin()
+Plug 'https://github.com/morhetz/gruvbox.git'
+Plug 'preservim/nerdtree'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'pangloss/vim-javascript' " for javascript only
+Plug 'leafgarland/typescript-vim' " for typescript only
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'djoshea/vim-autoread' " autoupdate files
+Plug 'https://github.com/szw/vim-maximizer.git' " window maximizer for vim
 " Plug 'puremourning/vimspector' " #TODO Setup vimspector debugging for vim
-call vundle#end()
-
-" Selectively bundling plugins based on filetype
+call plug#end()
 
 colorscheme gruvbox
 let g:javascript_plugin_jsdoc = 1
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pyright']
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pyright']
 let mapleader = " "
 
 nnoremap <Leader>+ :vertical resize +5<CR> 
@@ -115,12 +107,11 @@ function! GitPushUpsOrgBranch()
   endif
   return 1
 endfunction
-
 " git push set upstream remap
 nnoremap<silent> <Leader>gpsu :call GitPushUpsOrgBranch()<CR>
 
 " refresh vim env
-nnoremap<silent> <C-r><C-s> :source $MYVIMRC<CR>
+nnoremap<silent> <Leader><C-r> :source $MYVIMRC<CR>
 
 "------------------"
 "-------FZF--------"
@@ -128,9 +119,8 @@ nnoremap<silent> <C-r><C-s> :source $MYVIMRC<CR>
 nnoremap <leader>f :Rg <CR>
 nnoremap <C-p> :Files<CR>
 noremap <C-f> :Lines<CR>
-let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor}/*"'
-command! -bang -nargs=? -complete=dir Files
-     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 "---------Vim Maximizer-------"
 nnoremap <leader>mx :MaximizerToggle<CR>
