@@ -16,6 +16,8 @@ set incsearch
 set scrolloff=8
 set termguicolors
 set cmdheight=1
+set autoread
+au FocusGained,BufEnter * :checktime
 
 set updatetime=50
 
@@ -25,33 +27,16 @@ au BufRead,BufNewFile *.md setlocal textwidth=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 colorscheme default
 
-"function! CheckForFolder(folder)
-"  let searchStr = 'find '.a:folder.' -maxdepth 3 | '
-"  let fout = execute()
-
-let ftFrontend= 'typescript,javascript,html,css' 
-let ftBackendNode= 'javascript,typescript'
-let ftBackendPy= 'python'
-let ftFullStackCurr=ftFrontend.",".ftBackendPy
 call plug#begin()
 Plug 'https://github.com/morhetz/gruvbox.git'
 Plug 'preservim/nerdtree'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'pangloss/vim-javascript' " for javascript only
-Plug 'leafgarland/typescript-vim' " for typescript only
-Plug 'maxmellon/vim-jsx-pretty'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'djoshea/vim-autoread' " autoupdate files
-Plug 'https://github.com/szw/vim-maximizer.git' " window maximizer for vim
-" Plug 'puremourning/vimspector' " #TODO Setup vimspector debugging for vim
+"" Plug 'puremourning/vimspector' " #TODO Setup vimspector debugging for vim
 call plug#end()
 
 colorscheme gruvbox
-let g:javascript_plugin_jsdoc = 1
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pyright']
 let mapleader = " "
 
 nnoremap <Leader>+ :vertical resize +5<CR> 
@@ -112,15 +97,3 @@ nnoremap<silent> <Leader>gpsu :call GitPushUpsOrgBranch()<CR>
 
 " refresh vim env
 nnoremap<silent> <Leader><C-r> :source $MYVIMRC<CR>
-
-"------------------"
-"-------FZF--------"
-"------------------"
-nnoremap <leader>f :Rg <CR>
-nnoremap <C-p> :Files<CR>
-noremap <C-f> :Lines<CR>
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
-
-"---------Vim Maximizer-------"
-nnoremap <leader>mx :MaximizerToggle<CR>
