@@ -17,6 +17,9 @@ set scrolloff=8
 set termguicolors
 set cmdheight=1
 set autoread
+set guifont=Consolas:h17
+set ffs=dos
+set cursorline
 au FocusGained,BufEnter * :checktime
 
 set updatetime=50
@@ -25,21 +28,24 @@ set colorcolumn=80
 au BufRead,BufNewFile *.md setlocal textwidth=80
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
-colorscheme default
 
 call plug#begin()
 Plug 'https://github.com/morhetz/gruvbox.git'
 Plug 'preservim/nerdtree'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
-"" Plug 'puremourning/vimspector' " #TODO Setup vimspector debugging for vim
 call plug#end()
 
 colorscheme gruvbox
 let mapleader = " "
 
-nnoremap <Leader>+ :vertical resize +5<CR> 
+nnoremap <Leader>= :vertical resize +5<CR> 
 nnoremap <Leader>- :vertical resize -5<CR>
 nnoremap <leader>nt :NERDTree<CR>
 nnoremap <leader>vs :vsplit<CR>
@@ -92,8 +98,54 @@ function! GitPushUpsOrgBranch()
   endif
   return 1
 endfunction
-" git push set upstream remap
+
+" Feature: git push set upstream remap
 nnoremap<silent> <Leader>gpsu :call GitPushUpsOrgBranch()<CR>
 
-" refresh vim env
+" Feature: refresh vim env
 nnoremap<silent> <Leader><C-r> :source $MYVIMRC<CR>
+
+let s:fontsize = 17
+function! AdjustFontSize(amount)
+  let s:fontsize = s:fontsize+a:amount
+  execute ":set guifont=Consolas:h" . s:fontsize
+endfunction
+
+" Feature: change font size
+nnoremap <A-=> :call AdjustFontSize(1)<CR>
+nnoremap <A--> :call AdjustFontSize(-1)<CR>
+
+" Feature: change tabs
+nnoremap <C-Tab> :tabn<CR>
+nnoremap <S-Tab> :tabp<CR>
+ 
+" Feature: copy, paste from clipboard
+" copy in visual mode
+vnoremap <C-c>y "+y<CR> 
+" paste in normal mode
+nnoremap <C-c>p "+p<CR>
+" paste in insert mode
+inoremap <C-c>p <C-r>+
+
+nnoremap <C-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fw <cmd>lua require('telescope.builtin').live_grep()<cr>
+
+function! BuildProject()
+  " clear redirection buffer
+  let pwd = getcwd(0)
+  if pwd ==? 'W:\gamedev\quantm'
+    let buf_nr = bufnr('build.log')
+    if buf_nr != -1
+      execute ":".buf_nr."bd"
+    endif
+    execute ":redir! > build\\build.log"
+    execute ":silent !code\\build.bat"
+    execute ":redir END"
+    execute ":rightbelow sview build\\build.log" 
+  endif
+endfunction
+
+nnoremap <A-m> :call BuildProject()<cr>
+" NOTES
+" Jump between files(buffers)
+" => Ctrl-^
