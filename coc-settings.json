@@ -1,12 +1,17 @@
 {
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.work", "go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "userPlaceholders": true
+      }
+  },
   "python.jediEnabled": false,
   "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "typescript",
-    "typescriptreact",
+    "golang",
     "json",
-    "javascriptreact",
-    "typescript.tsx",
     "css",
     "scss",
     "html",

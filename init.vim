@@ -20,6 +20,7 @@ set autoread
 set guifont=Consolas:h17
 set ffs=dos
 set cursorline
+set splitright
 au FocusGained,BufEnter * :checktime
 
 set updatetime=50
@@ -31,10 +32,9 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 call plug#begin()
 Plug 'https://github.com/morhetz/gruvbox.git'
-Plug 'preservim/nerdtree'
+" Plug 'preservim/nerdtree'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -50,15 +50,16 @@ nnoremap <Leader>- :vertical resize -5<CR>
 nnoremap <leader>nt :NERDTree<CR>
 nnoremap <leader>vs :vsplit<CR>
 nnoremap <leader>hs :split<CR>
+
 " Use `[g` and `]g` to navigate diagnostics
-nmap <leader>[g <Plug>(coc-diagnostic-prev)
-nmap <leader>]g <Plug>(coc-diagnostic-next)
+" nmap <leader>[g <Plug>(coc-diagnostic-prev)
+" nmap <leader>]g <Plug>(coc-diagnostic-next)
 
 " " GoTo code navigation.
-nmap <leader>jd <Plug>(coc-definition)
-nmap <leader>jy <Plug>(coc-type-definition)
-nmap <leader>ji <Plug>(coc-implementation)
-nmap <leader>jr <Plug>(coc-references)
+" nmap <leader>jd <Plug>(coc-definition)
+" nmap <leader>jy <Plug>(coc-type-definition)
+" nmap <leader>ji <Plug>(coc-implementation)
+" nmap <leader>jr <Plug>(coc-references)
 
 " -- vim fugitive key mappings
 "  get commit from right window
@@ -69,38 +70,6 @@ nmap <leader>gj :diffget //2<CR>
 nmap <leader>gs :G<CR>
 " git blame
 nnoremap <Leader>gb :Git blame<CR>
-" git switch to develop
-nnoremap <Leader>gcd :Git checkout develop<CR>
-" git switch to master
-nnoremap <Leader>gcm :Git checkout master<CR>
-" git checkout to existing branch
-nnoremap <Leader>gce :Git checkout 
-" git create and checkout branch, and have user type branch_name
-nnoremap <Leader>gcb :Git checkout -b 
-
-" Custom function for creating Confirmation Box
-function! ConfirmBox(msg)
-  let result = confirm(a:msg, "&Yes\n&No")
-  return result
-endfunction
-
-" For new branch
-" gets branch name
-" sets upstream origin automatically
-function! GitPushUpsOrgBranch()
-  let branch = system("git branch --show-current")
-  let push_str = "git push --set-upstream origin ".branch
-  let conf_msg = "Do you want to execute\n".push_str
-  let conf_res = ConfirmBox(conf_msg)
-  if conf_res == 1
-    let push_str_out = system(push_str)
-    echo push_str_out
-  endif
-  return 1
-endfunction
-
-" Feature: git push set upstream remap
-nnoremap<silent> <Leader>gpsu :call GitPushUpsOrgBranch()<CR>
 
 " Feature: refresh vim env
 nnoremap<silent> <Leader><C-r> :source $MYVIMRC<CR>
@@ -118,34 +87,25 @@ nnoremap <A--> :call AdjustFontSize(-1)<CR>
 " Feature: change tabs
 nnoremap <C-Tab> :tabn<CR>
 nnoremap <S-Tab> :tabp<CR>
+" Feature: create tab
+nnoremap <C-t> :tabe<CR>
  
-" Feature: copy, paste from clipboard
-" copy in visual mode
-vnoremap <C-c>y "+y<CR> 
-" paste in normal mode
-nnoremap <C-c>p "+p<CR>
-" paste in insert mode
-inoremap <C-c>p <C-r>+
-
-nnoremap <C-p> <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fw <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 
 function! BuildProject()
   " clear redirection buffer
-  let pwd = getcwd(0)
-  if pwd ==? 'W:\gamedev\quantm'
-    let buf_nr = bufnr('build.log')
-    if buf_nr != -1
-      execute ":".buf_nr."bd"
+  if filereadable("code\\build.bat")
+    let b:make_val = execute(':set makeprg?')
+    if b:make_val != "code\\build.bat"
+      execute "setlocal makeprg=code\\build.bat"
     endif
-    execute ":redir! > build\\build.log"
-    execute ":silent !code\\build.bat"
-    execute ":redir END"
-    execute ":rightbelow sview build\\build.log" 
+    execute ":make"
+    execute ":copen"
   endif
 endfunction
 
 nnoremap <A-m> :call BuildProject()<cr>
-" NOTES
-" Jump between files(buffers)
-" => Ctrl-^
+nnoremap <A-p> :cprev<cr>
+nnoremap <A-n> :cnext<cr>
+    
