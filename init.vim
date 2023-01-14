@@ -32,7 +32,7 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 call plug#begin()
 Plug 'https://github.com/morhetz/gruvbox.git'
-" Plug 'preservim/nerdtree'
+Plug 'preservim/nerdtree'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
@@ -108,4 +108,3 @@ endfunction
 nnoremap <A-m> :call BuildProject()<cr>
 nnoremap <A-p> :cprev<cr>
 nnoremap <A-n> :cnext<cr>
-    
